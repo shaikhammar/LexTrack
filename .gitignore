@@ -3,16 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
-<<<<<<< HEAD
 .pnp.js
-=======
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
->>>>>>> 5ae23b1 (Initial commit from Create Next App)
 
 # testing
 /coverage
@@ -50,5 +41,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/app/generated/prisma
 
 /app/generated/prisma
