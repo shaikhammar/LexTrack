@@ -13,3 +13,73 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String   @id
+  createdAt DateTime
+  updatedAt DateTime
+
+  name          String
+  email         String    @unique
+  emailVerified Boolean
+  image         String?
+  role          String?   @default("admin")
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?
+
+  sessions Session[]
+  accounts Account[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  createdAt DateTime
+  updatedAt DateTime
+
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+
+  userId         String
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
+
+  @@map("session")
+}
+
+model Account {
+  id        String   @id
+  createdAt DateTime
+  updatedAt DateTime
+
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Verification {
+  id        String    @id
+  createdAt DateTime?
+  updatedAt DateTime?
+
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  @@map("verification")
+}
